@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bookshop | Login</title>
+    <title>Bookshop | Welcome</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-body">
@@ -16,28 +16,26 @@
                 <input type="password" id="reg-password" placeholder="Password" required />
                 <input type="text" id="reg-passwordHint" placeholder="Password Hint" />
                 <button type="submit">Sign Up</button>
-                <div class="message-area" id="register-message-area"></div>
             </form>
         </div>
         <div class="form-container sign-in-container">
             <form id="login-form">
-                <h1>Sign in</h1>
+                <h1>Sign In</h1>
                 <input type="email" id="login-email" placeholder="Email" required />
                 <input type="password" id="login-password" placeholder="Password" required />
                 <button type="submit">Sign In</button>
-                <div class="message-area" id="login-message-area"></div>
             </form>
         </div>
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
                     <h1>Welcome Back!</h1>
-                    <p>To keep connected with us please login with your personal info</p>
+                    <p>Log in to access your dashboard.</p>
                     <button class="ghost" id="signIn">Sign In</button>
                 </div>
                 <div class="overlay-panel overlay-right">
                     <h1>Hello, Friend!</h1>
-                    <p>Enter your personal details and start your journey with us</p>
+                    <p>Enter your details to start your journey.</p>
                     <button class="ghost" id="signUp">Sign Up</button>
                 </div>
             </div>
@@ -51,16 +49,8 @@
         signInButton.addEventListener('click', () => container.classList.remove('right-panel-active'));
         
         document.addEventListener('DOMContentLoaded', () => {
-            const AUTH_API_URL = '/api/auth';
             const registerForm = document.getElementById('register-form');
             const loginForm = document.getElementById('login-form');
-            const registerMessage = document.getElementById('register-message-area');
-            const loginMessage = document.getElementById('login-message-area');
-
-            const showMessage = (element, message, isError = false) => {
-                element.textContent = message;
-                element.style.color = isError ? 'red' : 'green';
-            };
 
             registerForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -69,27 +59,27 @@
                     lastName: document.getElementById('reg-lastName').value,
                     email: document.getElementById('reg-email').value,
                     password: document.getElementById('reg-password').value,
-                    passwordHint: document.getElementById('reg-passwordHint').value,
+                    passwordHint: document.getElementById('reg-passwordHint').value
                 };
-                try {
-                    const res = await fetch(`${AUTH_API_URL}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.msg);
-                    showMessage(registerMessage, 'Success! Please sign in.', false);
-                    setTimeout(() => signInButton.click(), 2000);
-                } catch (error) { showMessage(registerMessage, error.message, true); }
+                const res = await fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                if (res.ok) {
+                    alert('Registration successful! Please sign in.');
+                    signInButton.click();
+                } else {
+                    alert('Registration failed.');
+                }
             });
 
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const body = { email: document.getElementById('login-email').value, password: document.getElementById('login-password').value };
                 try {
-                    const res = await fetch(`${AUTH_API_URL}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                    const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
                     const data = await res.json();
-                    if (!res.ok) throw new Error(data.msg);
+                    if (!res.ok) throw new Error(data.msg || 'Invalid credentials');
                     localStorage.setItem('token', data.token);
                     window.location.href = 'dashboard.html';
-                } catch (error) { showMessage(loginMessage, error.message, true); }
+                } catch (error) { alert(error.message); }
             });
         });
     </script>
