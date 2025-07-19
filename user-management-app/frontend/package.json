@@ -1,20 +1,13 @@
 {
-      "name": "user-management-frontend",
+      "name": "user-management-frontend-vanilla",
       "version": "1.0.0",
-      "type": "module",
+      "description": "Frontend for User Management Application using Vanilla JS",
+      "main": "server.js",
       "scripts": {
-        "dev": "vite --host 0.0.0.0",
-        "build": "vite build",
-        "preview": "vite preview"
+        "start": "node server.js"
       },
       "dependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "axios": "^1.6.0"
-      },
-      "devDependencies": {
-        "@vitejs/plugin-react": "^4.0.3",
-        "vite": "^4.4.5"
+        "express": "^4.18.2",
+        "http-proxy-middleware": "^2.0.6"
       }
     }
-    

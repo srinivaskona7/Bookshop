@@ -1,0 +1,31 @@
+apiVersion: gateway.kyma-project.io/v1beta1
+kind: APIRule
+metadata:
+  name: user-management-apirule
+  namespace: user-management
+spec:
+  gateway: kyma-system/kyma-gateway
+  host: user-management1.c-64cdbc0.kyma.ondemand.com
+  service:
+    name: frontend
+    port: 80
+  corsPolicy:
+    allowCredentials: true
+    allowMethods:
+      - GET
+      - POST
+      - PUT
+      - PATCH
+      - OPTIONS
+  rules:
+    - path: /.*
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - PATCH
+        - OPTIONS
+        - HEAD
+      accessStrategies:
+        - handler: allow
