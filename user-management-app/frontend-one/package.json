@@ -1,0 +1,13 @@
+{
+  "name": "user-management-frontend-server",
+  "version": "1.0.0",
+  "description": "Node.js server for the User Management App frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6"
+  }
+}
